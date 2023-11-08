@@ -16,6 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using IniParser;
 using IniParser.Model;
 using System.Windows.Forms.VisualStyles;
+using System.Diagnostics;
 
 namespace TD
 {
@@ -114,6 +115,10 @@ namespace TD
 
         #endregion
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+        private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
+
         string strCheckFolder = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
         string strCheckFolder2 = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
         List<Tuple<MetroButton, MetroCheckBox>> buttonCheckBoxPairs = new List<Tuple<MetroButton, MetroCheckBox>>();
@@ -128,6 +133,13 @@ namespace TD
             InitializeComponent();
             CreateIni("CheckBoxData");
             CreateIni("CheckBoxState");
+
+            this.tabControl.TabPages[this.tabControl.TabCount - 1].Text = "";
+
+            this.tabControl.DrawItem += tabControl_DrawItem;
+            this.tabControl.MouseDown += tabControl_MouseDown;
+            this.tabControl.Selecting += tabControl_Selecting;
+            this.tabControl.HandleCreated += tabControl_HandleCreated;
         }
 
         private void TD_Load(object sender, EventArgs e)
@@ -709,6 +721,74 @@ namespace TD
             metroProgressBar1.Maximum = modifyIniLines.Length - 1;
             metroProgressBar1.Value = (int)percentage;
         }
+        private void tabControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            var lastIndex = this.tabControl.TabCount - 1;
+            if (this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
+            {
+                this.tabControl.TabPages.Insert(lastIndex, "New Tab");
+                this.tabControl.SelectedIndex = lastIndex;
+            }
+            else
+            {
+                for (var i = 0; i < this.tabControl.TabPages.Count; i++)
+                {
+                    var tabRect = this.tabControl.GetTabRect(i);
+                    tabRect.Inflate(-2, -2);
+                    var closeImage = Image.FromFile("ICON\\IICDM.png");
+                    var imageRect = new Rectangle((tabRect.Right - closeImage.Width), tabRect.Top + (tabRect.Height - closeImage.Height) / 2, closeImage.Width, closeImage.Height);
+                    if (imageRect.Contains(e.Location))
+                    {
+                        this.tabControl.TabPages.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPageIndex == this.tabControl.TabCount - 1)
+                e.Cancel = true;
+        }
+
+        private void tabControl_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            var tabPage = this.tabControl.TabPages[e.Index];
+            var tabRect = this.tabControl.GetTabRect(e.Index);
+            tabRect.Inflate(-2, -2);
+
+            if (e.Index == this.tabControl.TabCount - 1)
+            {
+                var addImage = Image.FromFile("Icon\\Add.png");
+                int imageX = tabRect.Left + (tabRect.Width - addImage.Width) / 2;
+                int imageY = tabRect.Top + (tabRect.Height - addImage.Height) / 2;
+                e.Graphics.DrawImage(addImage, imageX, imageY);
+
+                // 이미지 위치를 디버그 메시지로 출력합니다.
+                DisplayDebugInfo($"Add Image Location - X: {imageX}, Y: {imageY}");
+                DisplayDebugInfo("asdasd");
+            }
+
+            else
+            {
+                var closeImage = Image.FromFile("Icon\\IICDM.png"); 
+                int imageX = tabRect.Right - closeImage.Width;
+                int imageY = tabRect.Top + (tabRect.Height - closeImage.Height) / 2;
+                e.Graphics.DrawImage(closeImage, imageX, imageY);
+
+                // 이미지 위치를 디버그 메시지로 출력합니다.
+                DisplayDebugInfo($"Close Image Location - X: {imageX}, Y: {imageY}");
+                DisplayDebugInfo("asdasd");
+
+                TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font, tabRect, tabPage.ForeColor, TextFormatFlags.Left);
+            }
+        }
+        private void tabControl_HandleCreated(object sender, EventArgs e)
+        {
+            SendMessage(this.tabControl.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
+        }
+
         //private void DisplayDebugInfo(string debugMessage)
         //{
         //    for (int i = 0; i < modifyIniLines.Length; i++)

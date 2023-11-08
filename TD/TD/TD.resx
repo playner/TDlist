@@ -194,6 +194,18 @@
   <data name="checkBoxPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="criteriaModifyBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>223, 10</value>
+  </data>
+  <data name="criteriaModifyBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 25</value>
+  </data>
+  <data name="criteriaModifyBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="criteriaModifyBtn.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
   <data name="&gt;&gt;criteriaModifyBtn.Name" xml:space="preserve">
     <value>criteriaModifyBtn</value>
   </data>
@@ -227,49 +239,70 @@
   <data name="&gt;&gt;checkBoxPanel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="criteriaModifyBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>223, 10</value>
+  <data name="metroTabPage1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 38</value>
   </data>
-  <data name="criteriaModifyBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 25</value>
+  <data name="metroTabPage1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>279, 0</value>
   </data>
-  <data name="criteriaModifyBtn.TabIndex" type="System.Int32, mscorlib">
+  <data name="metroTabPage1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="metroTabPage1.Text" xml:space="preserve">
+    <value>metroTabPage1</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage1.Name" xml:space="preserve">
+    <value>metroTabPage1</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage1.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage1.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="metroTabPage2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 38</value>
+  </data>
+  <data name="metroTabPage2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>276, 0</value>
+  </data>
+  <data name="metroTabPage2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage2.Name" xml:space="preserve">
+    <value>metroTabPage2</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage2.Type" xml:space="preserve">
+    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage2.Parent" xml:space="preserve">
+    <value>tabControl</value>
+  </data>
+  <data name="&gt;&gt;metroTabPage2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 52</value>
+  </data>
+  <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>287, 39</value>
+  </data>
+  <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="criteriaModifyBtn.Text" xml:space="preserve">
-    <value>...</value>
+  <data name="&gt;&gt;tabControl.Name" xml:space="preserve">
+    <value>tabControl</value>
   </data>
-  <data name="&gt;&gt;criteriaModifyBtn.Name" xml:space="preserve">
-    <value>criteriaModifyBtn</value>
-  </data>
-  <data name="&gt;&gt;criteriaModifyBtn.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroButton, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;criteriaModifyBtn.Parent" xml:space="preserve">
-    <value>checkBoxPanel</value>
-  </data>
-  <data name="&gt;&gt;criteriaModifyBtn.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="metroTabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 49</value>
-  </data>
-  <data name="metroTabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>288, 25</value>
-  </data>
-  <data name="metroTabControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;metroTabControl1.Name" xml:space="preserve">
-    <value>metroTabControl1</value>
-  </data>
-  <data name="&gt;&gt;metroTabControl1.Type" xml:space="preserve">
+  <data name="&gt;&gt;tabControl.Type" xml:space="preserve">
     <value>MetroFramework.Controls.MetroTabControl, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
   </data>
-  <data name="&gt;&gt;metroTabControl1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabControl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;metroTabControl1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tabControl.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="debugTextBox.Location" type="System.Drawing.Point, System.Drawing">
@@ -290,9 +323,6 @@
   </data>
   <data name="debugTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
-  </data>
-  <data name="debugTextBox.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
   </data>
   <data name="&gt;&gt;debugTextBox.Name" xml:space="preserve">
     <value>debugTextBox</value>

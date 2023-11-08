@@ -25,3 +25,4 @@ C:\Users\user\Documents\TDlist\TD\TD\obj\Debug\TD.csproj.CoreCompileInputs.cache
 C:\Users\user\Documents\TDlist\TD\TD\obj\Debug\TD.csproj.CopyComplete
 C:\Users\user\Documents\TDlist\TD\TD\obj\Debug\TD.exe
 C:\Users\user\Documents\TDlist\TD\TD\obj\Debug\TD.pdb
+C:\Users\user\Documents\TDlist\TD\TD\obj\Debug\TD.Warning.resources

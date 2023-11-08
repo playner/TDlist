@@ -1,4 +1,7 @@
-﻿namespace TD
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace TD
 {
     partial class TD
     {
@@ -34,9 +37,12 @@
             this.addBoxBtn = new MetroFramework.Controls.MetroButton();
             this.checkBoxPanel = new MetroFramework.Controls.MetroPanel();
             this.criteriaModifyBtn = new MetroFramework.Controls.MetroButton();
-            this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
+            this.tabControl = new MetroFramework.Controls.MetroTabControl();
+            this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
+            this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
             this.debugTextBox = new System.Windows.Forms.TextBox();
             this.checkBoxPanel.SuspendLayout();
+            this.tabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // criteriaCheckBox
@@ -89,12 +95,43 @@
             this.criteriaModifyBtn.UseSelectable = true;
             this.criteriaModifyBtn.Click += new System.EventHandler(this.criteriaModifyBtn_Click);
             // 
-            // metroTabControl1
+            // tabControl
             // 
-            resources.ApplyResources(this.metroTabControl1, "metroTabControl1");
-            this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.metroTabControl1.UseSelectable = true;
+            this.tabControl.Controls.Add(this.metroTabPage1);
+            this.tabControl.Controls.Add(this.metroTabPage2);
+            this.tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            resources.ApplyResources(this.tabControl, "tabControl");
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.tabControl.UseSelectable = true;
+            this.tabControl.TabIndex = 0;
+            // 
+            // metroTabPage1
+            // 
+            this.metroTabPage1.HorizontalScrollbarBarColor = true;
+            this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage1.HorizontalScrollbarSize = 10;
+            resources.ApplyResources(this.metroTabPage1, "metroTabPage1");
+            this.metroTabPage1.Name = "metroTabPage1";
+            this.metroTabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.metroTabPage1.VerticalScrollbarBarColor = true;
+            this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage1.VerticalScrollbarSize = 10;
+            this.metroTabPage1.TabIndex = 0;
+            // 
+            // metroTabPage2
+            // 
+            this.metroTabPage2.HorizontalScrollbarBarColor = true;
+            this.metroTabPage2.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage2.HorizontalScrollbarSize = 10;
+            resources.ApplyResources(this.metroTabPage2, "metroTabPage2");
+            this.metroTabPage2.Name = "metroTabPage2";
+            this.metroTabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.metroTabPage2.VerticalScrollbarBarColor = true;
+            this.metroTabPage2.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage2.VerticalScrollbarSize = 10;
+            this.metroTabPage2.TabIndex = 1;
             // 
             // debugTextBox
             // 
@@ -107,7 +144,7 @@
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.debugTextBox);
-            this.Controls.Add(this.metroTabControl1);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.checkBoxPanel);
             this.Controls.Add(this.addBoxBtn);
             this.Controls.Add(this.metroProgressBar1);
@@ -117,6 +154,7 @@
             this.Load += new System.EventHandler(this.TD_Load);
             this.checkBoxPanel.ResumeLayout(false);
             this.checkBoxPanel.PerformLayout();
+            this.tabControl.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -128,9 +166,11 @@
         private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
         private MetroFramework.Controls.MetroButton addBoxBtn;
         private MetroFramework.Controls.MetroPanel checkBoxPanel;
-        private MetroFramework.Controls.MetroTabControl metroTabControl1;
+        private MetroFramework.Controls.MetroTabControl tabControl;
         private MetroFramework.Controls.MetroButton criteriaModifyBtn;
         private System.Windows.Forms.TextBox debugTextBox;
+        private MetroFramework.Controls.MetroTabPage metroTabPage1;
+        private MetroFramework.Controls.MetroTabPage metroTabPage2;
     }
 }
 
