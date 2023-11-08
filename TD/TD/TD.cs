@@ -224,7 +224,7 @@ namespace TD
                     newCheckBox.CheckedChanged += new System.EventHandler(this.criteriaCheckBoxChange);
 
                     checkBoxPanel.Controls.Add(newCheckBox);
-
+                    //테스트
                     MetroButton newButton = new MetroButton();
                     newButton.Text = "...";
                     newButton.Theme = MetroFramework.MetroThemeStyle.Dark;
