@@ -99,26 +99,23 @@ namespace TD
             // 
             this.tabControl.Controls.Add(this.metroTabPage1);
             this.tabControl.Controls.Add(this.metroTabPage2);
-            this.tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             resources.ApplyResources(this.tabControl, "tabControl");
+            this.tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.tabControl.UseSelectable = true;
-            this.tabControl.TabIndex = 0;
             // 
             // metroTabPage1
             // 
-            this.metroTabPage1.HorizontalScrollbarBarColor = true;
+            this.metroTabPage1.HorizontalScrollbarBarColor = false;
             this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.HorizontalScrollbarSize = 10;
             resources.ApplyResources(this.metroTabPage1, "metroTabPage1");
             this.metroTabPage1.Name = "metroTabPage1";
-            this.metroTabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.metroTabPage1.VerticalScrollbarBarColor = true;
+            this.metroTabPage1.VerticalScrollbarBarColor = false;
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 10;
-            this.metroTabPage1.TabIndex = 0;
             // 
             // metroTabPage2
             // 
@@ -127,11 +124,9 @@ namespace TD
             this.metroTabPage2.HorizontalScrollbarSize = 10;
             resources.ApplyResources(this.metroTabPage2, "metroTabPage2");
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.metroTabPage2.VerticalScrollbarBarColor = true;
             this.metroTabPage2.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage2.VerticalScrollbarSize = 10;
-            this.metroTabPage2.TabIndex = 1;
             // 
             // debugTextBox
             // 

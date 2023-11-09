@@ -242,8 +242,12 @@
   <data name="metroTabPage1.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 38</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="metroTabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
   <data name="metroTabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>279, 0</value>
+    <value>286, 0</value>
   </data>
   <data name="metroTabPage1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -266,8 +270,11 @@
   <data name="metroTabPage2.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 38</value>
   </data>
+  <data name="metroTabPage2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
   <data name="metroTabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 0</value>
+    <value>286, -3</value>
   </data>
   <data name="metroTabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -284,14 +291,17 @@
   <data name="&gt;&gt;metroTabPage2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="tabControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
   <data name="tabControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 52</value>
+    <value>20, 60</value>
   </data>
   <data name="tabControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 39</value>
+    <value>294, 32</value>
   </data>
   <data name="tabControl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;tabControl.Name" xml:space="preserve">
     <value>tabControl</value>
@@ -311,7 +321,6 @@
   <data name="debugTextBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="debugTextBox.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
     <value>No</value>
   </data>

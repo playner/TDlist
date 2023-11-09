@@ -1,4 +1,6 @@
 ﻿using MetroFramework.Controls;
+using MetroFramework.Drawing;
+using MetroFramework.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,6 +19,9 @@ using IniParser;
 using IniParser.Model;
 using System.Windows.Forms.VisualStyles;
 using System.Diagnostics;
+using MetroFramework;
+using System.Runtime.CompilerServices;
+using System.Runtime.Remoting;
 
 namespace TD
 {
@@ -115,9 +120,35 @@ namespace TD
 
         #endregion
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wp, IntPtr lp);
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
         private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
+
+        public static IntPtr GetChildWindowHandle(MetroTabControl tabControl, int tabIndex)
+        {
+            if (tabControl.Controls.Count > tabIndex)
+            {
+                MetroTabPage tabPage = tabControl.Controls[tabIndex] as MetroTabPage;
+
+                if (tabPage != null)
+                {
+                    Control window = tabPage.Controls.OfType<Control>().FirstOrDefault(c => c is Form || c is UserControl);
+                    return window?.Handle ?? IntPtr.Zero;
+                }
+            }
+
+            return IntPtr.Zero;
+        }
+        public static void SendTabMessage(MetroTabControl tabControl, int tabIndex, int message, IntPtr wParam, IntPtr lParam)
+        {
+            IntPtr hWnd = GetChildWindowHandle(tabControl, tabIndex);
+
+            if (hWnd != IntPtr.Zero)
+            {
+                SendMessage(hWnd, message, wParam, lParam);
+            }
+        }
 
         string strCheckFolder = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
         string strCheckFolder2 = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
@@ -133,13 +164,13 @@ namespace TD
             InitializeComponent();
             CreateIni("CheckBoxData");
             CreateIni("CheckBoxState");
-
             this.tabControl.TabPages[this.tabControl.TabCount - 1].Text = "";
+            this.tabControl.Padding = new Point(12, 4);
 
-            this.tabControl.DrawItem += tabControl_DrawItem;
-            this.tabControl.MouseDown += tabControl_MouseDown;
-            this.tabControl.Selecting += tabControl_Selecting;
-            this.tabControl.HandleCreated += tabControl_HandleCreated;
+            this.tabControl.CustomPaintForeground += MetroTabControl_CustomPaint;
+            this.tabControl.MouseDown += new MouseEventHandler(this.tabControl_MouseDown);
+            this.tabControl.Selecting += new TabControlCancelEventHandler(this.tabControl_Selecting);
+            this.tabControl.HandleCreated += new System.EventHandler(this.tabControl_HandleCreated);
         }
 
         private void TD_Load(object sender, EventArgs e)
@@ -154,7 +185,7 @@ namespace TD
             string[] modifyIniLines2 = File.ReadAllLines(strCheckFolder2, EUCKREncoding());
 
             buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(criteriaModifyBtn, criteriaCheckBox));
-            
+
 
             if (keyDatas.Count == 0)
             {
@@ -164,6 +195,7 @@ namespace TD
 
             embodyINIData(modifyIniLines);
             LoadCheckboxStates(modifyIniLines2);
+
         }
 
         private void criteriaCheckBoxChange(object sender, EventArgs e)
@@ -173,7 +205,7 @@ namespace TD
             if (button != null)
             {
                 setIni("CheckBoxState", checkBox.Name.ToString(), $"{checkBox.Checked}", strCheckFolder2);
-            }            
+            }
         }
 
         #region 윈도우 시작시 실행        
@@ -484,7 +516,7 @@ namespace TD
             string section = "CheckBox";
             IniData iniData = iniParser.ReadFile(strCheckFolder, EUCKREncoding());
             KeyDataCollection sectionData = new KeyDataCollection();
-            
+
             bool inTargetSection = false, iAmFirst = false;
 
             #region 섹션데이터에 키값 미리 추가
@@ -522,7 +554,7 @@ namespace TD
             }
 
             #endregion
-            
+
             for (int i = 0; i < modifyIniLines.Length; i++)
             {
                 if (modifyIniLines[i].StartsWith($"[{section}]"))
@@ -559,7 +591,7 @@ namespace TD
                                         string stringkey = keyData.Value.Trim();
                                         setIni(section, "CriteriaCheckBox", stringkey, strCheckFolder);
                                     }
-                                    
+
                                     else
                                     {
                                         KeyData keyData = sectionData.GetKeyData("체크박스" + k);
@@ -609,7 +641,7 @@ namespace TD
                     }
                 }
             }
-        
+
         }
 
         private void RefreshUI(string section, DialogResult result, int index, string[] modifyIniLines, string message)
@@ -650,9 +682,9 @@ namespace TD
                     }
                 }
             }
-           
-            else if(result == DialogResult.No)
-            { 
+
+            else if (result == DialogResult.No)
+            {
                 Tuple<MetroButton, MetroCheckBox> pair = buttonCheckBoxPairs[index]; // 클릭한 버튼과 연결된 쌍을 가져옴
 
                 if (pair.Item2.Name != "CriteriaCheckBox")
@@ -670,7 +702,7 @@ namespace TD
                         pairMove.Item2.Top -= (pair.Item2.Height + 5); // 위로 이동
                     }
                 }
-                
+
             }
         }
 
@@ -699,12 +731,12 @@ namespace TD
                         var isChecked = bool.Parse(parts[1].Trim());
 
                         var button = buttonCheckBoxPairs.FirstOrDefault(pair => pair.Item2.Name == buttonName);
-                        
+
                         if (button != null)
                         {
                             button.Item2.Checked = isChecked;
                         }
-                        if(isChecked)
+                        if (isChecked)
                         {
                             newData++;
                         }
@@ -724,18 +756,20 @@ namespace TD
         private void tabControl_MouseDown(object sender, MouseEventArgs e)
         {
             var lastIndex = this.tabControl.TabCount - 1;
+
             if (this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
             {
                 this.tabControl.TabPages.Insert(lastIndex, "New Tab");
                 this.tabControl.SelectedIndex = lastIndex;
             }
+
             else
             {
                 for (var i = 0; i < this.tabControl.TabPages.Count; i++)
                 {
                     var tabRect = this.tabControl.GetTabRect(i);
                     tabRect.Inflate(-2, -2);
-                    var closeImage = Image.FromFile("ICON\\IICDM.png");
+                    var closeImage = Image.FromFile("Icon\\IICDM.png");
                     var imageRect = new Rectangle((tabRect.Right - closeImage.Width), tabRect.Top + (tabRect.Height - closeImage.Height) / 2, closeImage.Width, closeImage.Height);
                     if (imageRect.Contains(e.Location))
                     {
@@ -752,41 +786,38 @@ namespace TD
                 e.Cancel = true;
         }
 
-        private void tabControl_DrawItem(object sender, DrawItemEventArgs e)
+        private void MetroTabControl_CustomPaint(object sender, MetroPaintEventArgs e)
         {
-            var tabPage = this.tabControl.TabPages[e.Index];
-            var tabRect = this.tabControl.GetTabRect(e.Index);
-            tabRect.Inflate(-2, -2);
+            MetroTabControl tabControl = (MetroTabControl)sender;
 
-            if (e.Index == this.tabControl.TabCount - 1)
+            for (int i = 0; i < tabControl.TabCount; i++)
             {
-                var addImage = Image.FromFile("Icon\\Add.png");
-                int imageX = tabRect.Left + (tabRect.Width - addImage.Width) / 2;
-                int imageY = tabRect.Top + (tabRect.Height - addImage.Height) / 2;
-                e.Graphics.DrawImage(addImage, imageX, imageY);
+                Rectangle tabRect = tabControl.GetTabRect(i);
+                tabRect.Inflate(-2, -2);
 
-                // 이미지 위치를 디버그 메시지로 출력합니다.
-                DisplayDebugInfo($"Add Image Location - X: {imageX}, Y: {imageY}");
-                DisplayDebugInfo("asdasd");
+                if (i == tabControl.TabCount - 1)
+                {
+                    var addImage = Image.FromFile("Icon\\Add.png");
+                    int imageX = tabRect.Left + (tabRect.Width - addImage.Width) / 2;
+                    int imageY = tabRect.Top + (tabRect.Height - addImage.Height) / 2;
+                    e.Graphics.DrawImage(addImage, imageX, imageY);
+                }
+
+                else
+                {
+                    var closeImage = Image.FromFile("Icon\\IICDM.png");
+                    int imageX = tabRect.Right - closeImage.Width;
+                    int imageY = tabRect.Top + (tabRect.Height - closeImage.Height) / 2;
+                    e.Graphics.DrawImage(closeImage, imageX, imageY + 2);
+                }
             }
 
-            else
-            {
-                var closeImage = Image.FromFile("Icon\\IICDM.png"); 
-                int imageX = tabRect.Right - closeImage.Width;
-                int imageY = tabRect.Top + (tabRect.Height - closeImage.Height) / 2;
-                e.Graphics.DrawImage(closeImage, imageX, imageY);
-
-                // 이미지 위치를 디버그 메시지로 출력합니다.
-                DisplayDebugInfo($"Close Image Location - X: {imageX}, Y: {imageY}");
-                DisplayDebugInfo("asdasd");
-
-                TextRenderer.DrawText(e.Graphics, tabPage.Text, tabPage.Font, tabRect, tabPage.ForeColor, TextFormatFlags.Left);
-            }
         }
         private void tabControl_HandleCreated(object sender, EventArgs e)
         {
-            SendMessage(this.tabControl.Handle, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
+            int lastIndex = tabControl.TabCount - 1;
+
+            SendTabMessage(tabControl, lastIndex, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
         }
 
         //private void DisplayDebugInfo(string debugMessage)
