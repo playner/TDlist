@@ -32,28 +32,28 @@ namespace TD
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TD));
-            this.criteriaCheckBox = new MetroFramework.Controls.MetroCheckBox();
+            this.체크박스0 = new MetroFramework.Controls.MetroCheckBox();
             this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.addBoxBtn = new MetroFramework.Controls.MetroButton();
-            this.checkBoxPanel = new MetroFramework.Controls.MetroPanel();
+            this.판넬0 = new MetroFramework.Controls.MetroPanel();
             this.criteriaModifyBtn = new MetroFramework.Controls.MetroButton();
-            this.tabControl = new MetroFramework.Controls.MetroTabControl();
+            this.CheckBox = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
             this.debugTextBox = new System.Windows.Forms.TextBox();
-            this.checkBoxPanel.SuspendLayout();
-            this.tabControl.SuspendLayout();
+            this.판넬0.SuspendLayout();
+            this.CheckBox.SuspendLayout();
             this.SuspendLayout();
             // 
-            // criteriaCheckBox
+            // 체크박스0
             // 
-            resources.ApplyResources(this.criteriaCheckBox, "criteriaCheckBox");
-            this.criteriaCheckBox.FontSize = MetroFramework.MetroCheckBoxSize.Tall;
-            this.criteriaCheckBox.FontWeight = MetroFramework.MetroCheckBoxWeight.Bold;
-            this.criteriaCheckBox.Name = "criteriaCheckBox";
-            this.criteriaCheckBox.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.criteriaCheckBox.UseSelectable = true;
-            this.criteriaCheckBox.CheckedChanged += new System.EventHandler(this.criteriaCheckBoxChange);
+            resources.ApplyResources(this.체크박스0, "체크박스0");
+            this.체크박스0.FontSize = MetroFramework.MetroCheckBoxSize.Tall;
+            this.체크박스0.FontWeight = MetroFramework.MetroCheckBoxWeight.Bold;
+            this.체크박스0.Name = "체크박스0";
+            this.체크박스0.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.체크박스0.UseSelectable = true;
+            this.체크박스0.CheckedChanged += new System.EventHandler(this.criteriaCheckBoxChange);
             // 
             // metroProgressBar1
             // 
@@ -70,21 +70,21 @@ namespace TD
             this.addBoxBtn.UseSelectable = true;
             this.addBoxBtn.Click += new System.EventHandler(this.addBoxBtn_Click);
             // 
-            // checkBoxPanel
+            // 판넬0
             // 
-            resources.ApplyResources(this.checkBoxPanel, "checkBoxPanel");
-            this.checkBoxPanel.Controls.Add(this.criteriaModifyBtn);
-            this.checkBoxPanel.Controls.Add(this.criteriaCheckBox);
-            this.checkBoxPanel.HorizontalScrollbar = true;
-            this.checkBoxPanel.HorizontalScrollbarBarColor = true;
-            this.checkBoxPanel.HorizontalScrollbarHighlightOnWheel = false;
-            this.checkBoxPanel.HorizontalScrollbarSize = 10;
-            this.checkBoxPanel.Name = "checkBoxPanel";
-            this.checkBoxPanel.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.checkBoxPanel.VerticalScrollbar = true;
-            this.checkBoxPanel.VerticalScrollbarBarColor = true;
-            this.checkBoxPanel.VerticalScrollbarHighlightOnWheel = false;
-            this.checkBoxPanel.VerticalScrollbarSize = 10;
+            resources.ApplyResources(this.판넬0, "판넬0");
+            this.판넬0.Controls.Add(this.criteriaModifyBtn);
+            this.판넬0.Controls.Add(this.체크박스0);
+            this.판넬0.HorizontalScrollbar = true;
+            this.판넬0.HorizontalScrollbarBarColor = true;
+            this.판넬0.HorizontalScrollbarHighlightOnWheel = false;
+            this.판넬0.HorizontalScrollbarSize = 10;
+            this.판넬0.Name = "판넬0";
+            this.판넬0.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.판넬0.VerticalScrollbar = true;
+            this.판넬0.VerticalScrollbarBarColor = true;
+            this.판넬0.VerticalScrollbarHighlightOnWheel = false;
+            this.판넬0.VerticalScrollbarSize = 10;
             // 
             // criteriaModifyBtn
             // 
@@ -95,16 +95,16 @@ namespace TD
             this.criteriaModifyBtn.UseSelectable = true;
             this.criteriaModifyBtn.Click += new System.EventHandler(this.criteriaModifyBtn_Click);
             // 
-            // tabControl
+            // CheckBox
             // 
-            this.tabControl.Controls.Add(this.metroTabPage1);
-            this.tabControl.Controls.Add(this.metroTabPage2);
-            resources.ApplyResources(this.tabControl, "tabControl");
-            this.tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.tabControl.UseSelectable = true;
+            this.CheckBox.Controls.Add(this.metroTabPage1);
+            this.CheckBox.Controls.Add(this.metroTabPage2);
+            resources.ApplyResources(this.CheckBox, "CheckBox");
+            this.CheckBox.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            this.CheckBox.Name = "CheckBox";
+            this.CheckBox.SelectedIndex = 0;
+            this.CheckBox.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.CheckBox.UseSelectable = true;
             // 
             // metroTabPage1
             // 
@@ -119,14 +119,16 @@ namespace TD
             // 
             // metroTabPage2
             // 
-            this.metroTabPage2.HorizontalScrollbarBarColor = true;
-            this.metroTabPage2.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroTabPage2.HorizontalScrollbarSize = 10;
             resources.ApplyResources(this.metroTabPage2, "metroTabPage2");
+            this.metroTabPage2.HorizontalScrollbar = true;
+            this.metroTabPage2.HorizontalScrollbarBarColor = false;
+            this.metroTabPage2.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage2.HorizontalScrollbarSize = 0;
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.VerticalScrollbarBarColor = true;
+            this.metroTabPage2.VerticalScrollbar = true;
+            this.metroTabPage2.VerticalScrollbarBarColor = false;
             this.metroTabPage2.VerticalScrollbarHighlightOnWheel = false;
-            this.metroTabPage2.VerticalScrollbarSize = 10;
+            this.metroTabPage2.VerticalScrollbarSize = 0;
             // 
             // debugTextBox
             // 
@@ -139,17 +141,17 @@ namespace TD
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.debugTextBox);
-            this.Controls.Add(this.tabControl);
-            this.Controls.Add(this.checkBoxPanel);
+            this.Controls.Add(this.CheckBox);
+            this.Controls.Add(this.판넬0);
             this.Controls.Add(this.addBoxBtn);
             this.Controls.Add(this.metroProgressBar1);
             this.Name = "TD";
             this.TextAlign = MetroFramework.Forms.MetroFormTextAlign.Center;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.TD_Load);
-            this.checkBoxPanel.ResumeLayout(false);
-            this.checkBoxPanel.PerformLayout();
-            this.tabControl.ResumeLayout(false);
+            this.판넬0.ResumeLayout(false);
+            this.판넬0.PerformLayout();
+            this.CheckBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -157,11 +159,11 @@ namespace TD
 
         #endregion
 
-        private MetroFramework.Controls.MetroCheckBox criteriaCheckBox;
+        private MetroFramework.Controls.MetroCheckBox 체크박스0;
         private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
         private MetroFramework.Controls.MetroButton addBoxBtn;
-        private MetroFramework.Controls.MetroPanel checkBoxPanel;
-        private MetroFramework.Controls.MetroTabControl tabControl;
+        private MetroFramework.Controls.MetroPanel 판넬0;
+        private MetroFramework.Controls.MetroTabControl CheckBox;
         private MetroFramework.Controls.MetroButton criteriaModifyBtn;
         private System.Windows.Forms.TextBox debugTextBox;
         private MetroFramework.Controls.MetroTabPage metroTabPage1;

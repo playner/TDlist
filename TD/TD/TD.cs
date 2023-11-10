@@ -120,94 +120,6 @@ namespace TD
 
         #endregion
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
-
-        private const int TCM_SETMINTABWIDTH = 0x1300 + 49;
-
-        public static IntPtr GetChildWindowHandle(MetroTabControl tabControl, int tabIndex)
-        {
-            if (tabControl.Controls.Count > tabIndex)
-            {
-                MetroTabPage tabPage = tabControl.Controls[tabIndex] as MetroTabPage;
-
-                if (tabPage != null)
-                {
-                    Control window = tabPage.Controls.OfType<Control>().FirstOrDefault(c => c is Form || c is UserControl);
-                    return window?.Handle ?? IntPtr.Zero;
-                }
-            }
-
-            return IntPtr.Zero;
-        }
-        public static void SendTabMessage(MetroTabControl tabControl, int tabIndex, int message, IntPtr wParam, IntPtr lParam)
-        {
-            IntPtr hWnd = GetChildWindowHandle(tabControl, tabIndex);
-
-            if (hWnd != IntPtr.Zero)
-            {
-                SendMessage(hWnd, message, wParam, lParam);
-            }
-        }
-
-        string strCheckFolder = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
-        string strCheckFolder2 = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
-        List<Tuple<MetroButton, MetroCheckBox>> buttonCheckBoxPairs = new List<Tuple<MetroButton, MetroCheckBox>>();
-        private FileIniDataParser iniParser = new FileIniDataParser();
-
-        private static readonly string _startupRegPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
-        string buttonText = "";
-        int newData = 0;
-
-        public TD()
-        {
-            InitializeComponent();
-            CreateIni("CheckBoxData");
-            CreateIni("CheckBoxState");
-            this.tabControl.TabPages[this.tabControl.TabCount - 1].Text = "";
-            this.tabControl.Padding = new Point(12, 4);
-
-            this.tabControl.CustomPaintForeground += MetroTabControl_CustomPaint;
-            this.tabControl.MouseDown += new MouseEventHandler(this.tabControl_MouseDown);
-            this.tabControl.Selecting += new TabControlCancelEventHandler(this.tabControl_Selecting);
-            this.tabControl.HandleCreated += new System.EventHandler(this.tabControl_HandleCreated);
-        }
-
-        private void TD_Load(object sender, EventArgs e)
-        {
-            AddStartupProgram("TD", Application.ExecutablePath);
-
-            strCheckFolder += "\\INI\\CheckBoxData.ini";
-            strCheckFolder2 += "\\INI\\CheckBoxState.ini";
-            IniData iniData = iniParser.ReadFile(strCheckFolder, EUCKREncoding());
-            KeyDataCollection keyDatas = iniData["CheckBox"];
-            string[] modifyIniLines = File.ReadAllLines(strCheckFolder, EUCKREncoding());
-            string[] modifyIniLines2 = File.ReadAllLines(strCheckFolder2, EUCKREncoding());
-
-            buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(criteriaModifyBtn, criteriaCheckBox));
-
-
-            if (keyDatas.Count == 0)
-            {
-                setIni("CheckBox", "CriteriaCheckBox", "기본", strCheckFolder);
-                setIni("CheckBoxState", "CriteriaCheckBox", "False", strCheckFolder2);
-            }
-
-            embodyINIData(modifyIniLines);
-            LoadCheckboxStates(modifyIniLines2);
-
-        }
-
-        private void criteriaCheckBoxChange(object sender, EventArgs e)
-        {
-            var checkBox = (MetroCheckBox)sender;
-            var button = buttonCheckBoxPairs.FirstOrDefault(pair => pair.Item2 == checkBox);
-            if (button != null)
-            {
-                setIni("CheckBoxState", checkBox.Name.ToString(), $"{checkBox.Checked}", strCheckFolder2);
-            }
-        }
-
         #region 윈도우 시작시 실행        
         private Microsoft.Win32.RegistryKey GetRegKey(string regPath, bool writable)
         {
@@ -235,11 +147,78 @@ namespace TD
         }
         #endregion
 
+        string strCheckFolder = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
+        string strCheckFolder2 = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
+
+        List<Tuple<MetroButton, MetroCheckBox>> buttonCheckBoxPairs = new List<Tuple<MetroButton, MetroCheckBox>>();
+        List<Panel> tabPanels = new List<Panel>();
+
+        private FileIniDataParser iniParser = new FileIniDataParser();
+        private MouseEventArgs mouseEventArgsForRemove;
+
+        private static readonly string _startupRegPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
+        string buttonText = "";
+        int hoveredTabIndex = -1;
+        int newData = 0;
+
+        public TD()
+        {
+            InitializeComponent();
+            CreateIni("CheckBoxData");
+            CreateIni("CheckBoxState");
+
+            this.CheckBox.TabPages[this.CheckBox.TabCount - 1].Text = "";
+            this.CheckBox.Padding = new Point(14, 4);
+
+            this.CheckBox.MouseDown += new MouseEventHandler(tabControl_MouseDown);
+            this.CheckBox.Selecting += new TabControlCancelEventHandler(tabControl_Selecting);
+            this.CheckBox.MouseEnter += tabControl_MouseEnter;
+            this.CheckBox.MouseLeave += tabControl_MouseLeave;
+            this.CheckBox.MouseMove += tabControl_MouseMove;
+            this.CheckBox.CustomPaintForeground += tabControl_CustomPaint;
+            this.CheckBox.SelectedIndexChanged += tabControl_SelectedIndexChanged;
+        }
+
+        private void TD_Load(object sender, EventArgs e)
+        {
+            AddStartupProgram("TD", Application.ExecutablePath);
+
+            string dataINIFilePath = strCheckFolder + "\\INI\\CheckBoxData.ini";
+            string stateINIFilePath = strCheckFolder + "\\INI\\CheckBoxState.ini";
+
+            IniData iniData = iniParser.ReadFile(strCheckFolder, EUCKREncoding());
+            KeyDataCollection keyDatas = iniData["CheckBox"];
+            string[] modifyIniLines = File.ReadAllLines(strCheckFolder, EUCKREncoding());
+            string[] modifyIniLines2 = File.ReadAllLines(strCheckFolder2, EUCKREncoding());
+
+            buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(criteriaModifyBtn, 체크박스0));
+            tabPanels.Add(판넬0);
+
+            if (keyDatas.Count == 0)
+            {
+                setIni("CheckBox", "CriteriaCheckBox", "기본", strCheckFolder);
+                setIni("CheckBoxState", "CriteriaCheckBox", "False", strCheckFolder2);
+            }
+
+            embodyINIData(modifyIniLines);
+            LoadCheckboxStates(modifyIniLines2);
+        }
+
+        private void criteriaCheckBoxChange(object sender, EventArgs e)
+        {
+            var checkBox = (MetroCheckBox)sender;
+            var button = buttonCheckBoxPairs.FirstOrDefault(pair => pair.Item2 == checkBox);
+            if (button != null)
+            {
+                setIni("CheckBoxState", checkBox.Name.ToString(), $"{checkBox.Checked}", strCheckFolder2);
+            }
+        }
+
         private void addBoxBtn_Click(object sender, EventArgs e)
         {
             InitializeNewList();
-            int changePosition = checkBoxPanel.VerticalScroll.Value + checkBoxPanel.VerticalScroll.SmallChange * 30;
-            checkBoxPanel.AutoScrollPosition = new Point(0, changePosition);
+            int changePosition = 판넬0.VerticalScroll.Value + 판넬0.VerticalScroll.SmallChange * 30;
+            판넬0.AutoScrollPosition = new Point(0, changePosition);
             metroProgressBar1.Maximum++;
         }
 
@@ -253,36 +232,44 @@ namespace TD
             {
                 if (!string.IsNullOrEmpty(buttonText))
                 {
+                    MetroTabPage currentTab = (MetroTabPage)CheckBox.SelectedTab;
+                    string panelName = "판넬" + CheckBox.SelectedIndex;
+
+                    Panel currentPanel = new Panel();
+                    currentPanel.Name = panelName;
+
                     Tuple<MetroButton, MetroCheckBox> lastPair = buttonCheckBoxPairs[buttonCheckBoxPairs.Count - 1];
+                    currentTab.Controls.Add(currentPanel);
 
                     MetroCheckBox newCheckBox = new MetroCheckBox();
-                    newCheckBox.FontSize = MetroFramework.MetroCheckBoxSize.Tall;
-                    newCheckBox.FontWeight = MetroFramework.MetroCheckBoxWeight.Bold;
+                    newCheckBox.FontSize = MetroCheckBoxSize.Tall;
+                    newCheckBox.FontWeight = MetroCheckBoxWeight.Bold;
                     newCheckBox.Text = buttonText;
                     newCheckBox.Name = "체크박스" + buttonCheckBoxPairs.Count;
-                    newCheckBox.Theme = MetroFramework.MetroThemeStyle.Dark;
+                    newCheckBox.Theme = MetroThemeStyle.Dark;
                     newCheckBox.UseSelectable = true;
-                    newCheckBox.Location = new System.Drawing.Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
-                    newCheckBox.Size = new Size(criteriaCheckBox.Size.Width, criteriaCheckBox.Size.Height);
+                    newCheckBox.Location = new Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
+                    newCheckBox.Size = new Size(체크박스0.Size.Width, 체크박스0.Size.Height);
                     newCheckBox.AutoSize = true;
-                    newCheckBox.CheckedChanged += new System.EventHandler(this.criteriaCheckBoxChange);
+                    newCheckBox.CheckedChanged += new EventHandler(criteriaCheckBoxChange);
 
-                    checkBoxPanel.Controls.Add(newCheckBox);
+                    currentPanel.Controls.Add(newCheckBox);
                     //테스트
                     MetroButton newButton = new MetroButton();
                     newButton.Text = "...";
-                    newButton.Theme = MetroFramework.MetroThemeStyle.Dark;
-                    newButton.FontSize = MetroFramework.MetroButtonSize.Tall;
+                    newButton.Theme = MetroThemeStyle.Dark;
+                    newButton.FontSize = MetroButtonSize.Tall;
                     newButton.Name = "버튼" + buttonCheckBoxPairs.Count;
                     newButton.Size = new Size(criteriaModifyBtn.Size.Width, criteriaModifyBtn.Size.Height);
-                    newButton.Location = new System.Drawing.Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
-                    newButton.Click += new System.EventHandler(this.criteriaModifyBtn_Click);
+                    newButton.Location = new Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
+                    newButton.Click += new EventHandler(criteriaModifyBtn_Click);
 
-                    checkBoxPanel.Controls.Add(newButton);
+                    currentPanel.Controls.Add(newButton);
                     buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(newButton, newCheckBox));
 
-                    setIni("CheckBox", newCheckBox.Name, buttonText, strCheckFolder);
-                    setIni("CheckBoxState", newCheckBox.Name, "False", strCheckFolder2);
+
+                    setIni(currentTab.Name + "Data", newCheckBox.Name, buttonText, strCheckFolder);
+                    setIni(currentTab.Name + "State", newCheckBox.Name, "False", strCheckFolder2);
                 }
             }
         }
@@ -574,8 +561,8 @@ namespace TD
 
                         if (iAmFirst)
                         {
-                            this.criteriaCheckBox.Text = value;
-                            this.criteriaCheckBox.Name = "CriteriaCheckBox";
+                            this.체크박스0.Text = value;
+                            this.체크박스0.Name = "CriteriaCheckBox";
 
                             if (key != "CriteriaCheckBox")
                             {
@@ -615,11 +602,11 @@ namespace TD
                             newCheckBox.Theme = MetroFramework.MetroThemeStyle.Dark;
                             newCheckBox.UseSelectable = true;
                             newCheckBox.Location = new System.Drawing.Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
-                            newCheckBox.Size = new Size(criteriaCheckBox.Size.Width, criteriaCheckBox.Size.Height);
+                            newCheckBox.Size = new Size(체크박스0.Size.Width, 체크박스0.Size.Height);
                             newCheckBox.CheckedChanged += new System.EventHandler(this.criteriaCheckBoxChange);
                             newCheckBox.AutoSize = true;
 
-                            checkBoxPanel.Controls.Add(newCheckBox);
+                            판넬0.Controls.Add(newCheckBox);
 
                             MetroButton newButton = new MetroButton();
                             newButton.Text = "...";
@@ -629,7 +616,7 @@ namespace TD
                             newButton.Location = new System.Drawing.Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
                             newButton.Click += new System.EventHandler(this.criteriaModifyBtn_Click);
 
-                            checkBoxPanel.Controls.Add(newButton);
+                            판넬0.Controls.Add(newButton);
 
                             buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(newButton, newCheckBox));
                         }
@@ -689,8 +676,8 @@ namespace TD
 
                 if (pair.Item2.Name != "CriteriaCheckBox")
                 {
-                    checkBoxPanel.Controls.Remove(pair.Item1); // 패널에서 버튼 제거
-                    checkBoxPanel.Controls.Remove(pair.Item2); // 패널에서 체크 박스 제거
+                    판넬0.Controls.Remove(pair.Item1); // 패널에서 버튼 제거
+                    판넬0.Controls.Remove(pair.Item2); // 패널에서 체크 박스 제거
                     pair.Item1.Dispose(); // 버튼 메모리에서 해제
                     pair.Item2.Dispose(); // 체크 박스 메모리에서 해제
                     buttonCheckBoxPairs.RemoveAt(index); // 리스트에서 쌍 제거
@@ -706,10 +693,6 @@ namespace TD
             }
         }
 
-        private void DisplayDebugInfo(string debugMessage)
-        {
-            debugTextBox.AppendText(debugMessage + "\r\n");
-        }
         private void LoadCheckboxStates(string[] modifyIniLines)
         {
             string section = "CheckBoxState";
@@ -723,7 +706,6 @@ namespace TD
                 else if (inTargetSection)
                 {
                     string[] parts = modifyIniLines[i].Split(new char[] { '=' }, 2);
-
 
                     if (parts.Length == 2)
                     {
@@ -746,49 +728,38 @@ namespace TD
                         inTargetSection = false;
 
                 }
-
             }
-
             double percentage = (double)newData / metroProgressBar1.Maximum * 100;
             metroProgressBar1.Maximum = modifyIniLines.Length - 1;
             metroProgressBar1.Value = (int)percentage;
         }
+
         private void tabControl_MouseDown(object sender, MouseEventArgs e)
         {
-            var lastIndex = this.tabControl.TabCount - 1;
+            int lastTapIndex = this.CheckBox.TabCount - 1;
 
-            if (this.tabControl.GetTabRect(lastIndex).Contains(e.Location))
+            if (this.CheckBox.GetTabRect(lastTapIndex).Contains(e.Location))
             {
-                this.tabControl.TabPages.Insert(lastIndex, "New Tab");
-                this.tabControl.SelectedIndex = lastIndex;
+                AddTabWithPanel();
             }
 
             else
             {
-                for (var i = 0; i < this.tabControl.TabPages.Count; i++)
-                {
-                    var tabRect = this.tabControl.GetTabRect(i);
-                    tabRect.Inflate(-2, -2);
-                    var closeImage = Image.FromFile("Icon\\IICDM.png");
-                    var imageRect = new Rectangle((tabRect.Right - closeImage.Width), tabRect.Top + (tabRect.Height - closeImage.Height) / 2, closeImage.Width, closeImage.Height);
-                    if (imageRect.Contains(e.Location))
-                    {
-                        this.tabControl.TabPages.RemoveAt(i);
-                        break;
-                    }
-                }
+                mouseEventArgsForRemove = e;
+                RemoveSelectedTabWithPanel();
             }
         }
 
         private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (e.TabPageIndex == this.tabControl.TabCount - 1)
+            if (e.TabPageIndex == this.CheckBox.TabCount - 1)
                 e.Cancel = true;
         }
 
-        private void MetroTabControl_CustomPaint(object sender, MetroPaintEventArgs e)
+        private void tabControl_CustomPaint(object sender, MetroPaintEventArgs e)
         {
-            MetroTabControl tabControl = (MetroTabControl)sender;
+            MetroTabControl tabControl = (MetroTabControl)sender; 
+            Point mousePosition = tabControl.PointToClient(Control.MousePosition);
 
             for (int i = 0; i < tabControl.TabCount; i++)
             {
@@ -800,7 +771,19 @@ namespace TD
                     var addImage = Image.FromFile("Icon\\Add.png");
                     int imageX = tabRect.Left + (tabRect.Width - addImage.Width) / 2;
                     int imageY = tabRect.Top + (tabRect.Height - addImage.Height) / 2;
-                    e.Graphics.DrawImage(addImage, imageX, imageY);
+                    if (i == hoveredTabIndex)
+                    {
+                        using (SolidBrush brush = new SolidBrush(MetroColors.Blue))
+                        {
+                            e.Graphics.FillRectangle(brush, tabRect);
+                        }
+
+                        using (Pen pen = new Pen(MetroColors.Blue, 2))
+                        {
+                            e.Graphics.DrawRectangle(pen, tabRect);
+                        }
+                    }
+                    e.Graphics.DrawImage(addImage, imageX, imageY + 2);
                 }
 
                 else
@@ -808,16 +791,150 @@ namespace TD
                     var closeImage = Image.FromFile("Icon\\IICDM.png");
                     int imageX = tabRect.Right - closeImage.Width;
                     int imageY = tabRect.Top + (tabRect.Height - closeImage.Height) / 2;
+                    if (i == hoveredTabIndex)
+                    {
+                        using (SolidBrush brush = new SolidBrush(Color.FromArgb(25, MetroColors.Blue)))
+                        {
+                            e.Graphics.FillRectangle(brush, tabRect);
+                        }
+
+                        if (mousePosition.X >= imageX && mousePosition.X <= imageX + closeImage.Width && mousePosition.Y >= imageY && mousePosition.Y <= imageY + closeImage.Height)
+                        {
+                            using (SolidBrush brush = new SolidBrush(MetroColors.Blue))
+                            {
+                                e.Graphics.FillEllipse(brush, imageX - 2, imageY - 1, closeImage.Width, closeImage.Height);
+                            }
+
+                            using (Pen pen = new Pen(MetroColors.Blue, 2))
+                            {
+                                e.Graphics.DrawEllipse(pen, imageX - 2, imageY - 1, closeImage.Width, closeImage.Height);
+                            }
+                        }
+                    }
                     e.Graphics.DrawImage(closeImage, imageX, imageY + 2);
                 }
             }
-
         }
-        private void tabControl_HandleCreated(object sender, EventArgs e)
-        {
-            int lastIndex = tabControl.TabCount - 1;
 
-            SendTabMessage(tabControl, lastIndex, TCM_SETMINTABWIDTH, IntPtr.Zero, (IntPtr)16);
+        private void tabControl_MouseEnter(object sender, EventArgs e)
+        {
+            MetroTabControl tabControl = (MetroTabControl)sender;
+            Point mousePosition = tabControl.PointToClient(Cursor.Position);
+
+            for (int i = 0; i < tabControl.TabCount; i++)
+            {
+                Rectangle tabRect = tabControl.GetTabRect(i);
+
+                if (tabRect.Contains(mousePosition))
+                {
+                    hoveredTabIndex = i;
+                    tabControl.Invalidate();
+                    break;
+                }
+            }
+        }
+
+        private void tabControl_MouseMove(object sender, MouseEventArgs e)
+        {
+            MetroTabControl tabControl = (MetroTabControl)sender;
+
+            Point mousePosition = e.Location;
+
+            for (int i = 0; i < tabControl.TabCount; i++)
+            {
+                Rectangle tabRect = tabControl.GetTabRect(i);
+
+                if (tabRect.Contains(mousePosition))
+                {
+                    hoveredTabIndex = i;
+                    tabControl.Invalidate();
+                    break;
+                }
+            }
+        }
+
+        private void tabControl_MouseLeave(object sender, EventArgs e)
+        {
+            hoveredTabIndex = -1;
+            MetroTabControl tabControl = (MetroTabControl)sender;
+            tabControl.Invalidate();
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // 현재 선택된 탭의 인덱스
+            int selectedTabIndex = CheckBox.SelectedIndex;
+
+            // 선택된 탭에 해당하는 판넬을 보여주도록 설정
+            ShowSelectedPanel(selectedTabIndex);
+        }
+        private void AddTabWithPanel()
+        {
+            CustomMessageBox messageBox = new CustomMessageBox("addBoxBtn");
+            DialogResult result = messageBox.ShowDialog();
+            buttonText = messageBox.GetInputText();
+            int lastTapIndex = this.CheckBox.TabCount - 1;
+
+            if (result == DialogResult.OK)
+            {
+                if (!string.IsNullOrEmpty(buttonText))
+                {
+                    MetroTabPage newTab = new MetroTabPage();
+                    newTab.Text = buttonText;
+                    CheckBox.TabPages.Insert(lastTapIndex, newTab);
+                    CheckBox.SelectedIndex = lastTapIndex;
+
+                    Panel newPanel = new Panel();
+                    newPanel.Dock = DockStyle.Fill;
+                    newPanel.Name = "판넬" + CheckBox.SelectedIndex;
+                    tabPanels.Add(newPanel);
+
+                    newTab.Controls.Add(newPanel);
+
+                    CheckBox.SelectedTab = CheckBox.TabPages[CheckBox.TabPages.Count - 1];
+                }
+            }
+        }
+
+        private void RemoveSelectedTabWithPanel()
+        {
+            for (var i = 0; i < CheckBox.TabPages.Count; i++)
+            {
+                var tabRect = CheckBox.GetTabRect(i);
+                tabRect.Inflate(-2, -2);
+                var closeImage = Image.FromFile("Icon\\IICDM.png");
+                var imageRect = new Rectangle((tabRect.Right - closeImage.Width), tabRect.Top + (tabRect.Height - closeImage.Height) / 2, closeImage.Width, closeImage.Height);
+
+                if (imageRect.Contains(mouseEventArgsForRemove.Location))
+                {
+                    CheckBox.TabPages.RemoveAt(i);
+                    Panel panelToRemove = tabPanels[i];
+                    tabPanels.RemoveAt(i);
+                    panelToRemove.Dispose(); // 패널 제거
+                    break;
+                }
+            }
+        }
+
+        private void ShowSelectedPanel(int selectedTabIndex)
+        {
+            for (int i = 0; i < tabPanels.Count; i++)
+            {
+                if (i == selectedTabIndex)
+                {
+                    // 선택한 탭의 판넬은 Visible을 true로 설정
+                    tabPanels[i].Visible = true;
+                }
+                else
+                {
+                    // 나머지 판넬들은 Visible을 false로 설정
+                    tabPanels[i].Visible = false;
+                }
+            }
+        }
+        private void DisplayDebugInfo(string debugMessage)
+        {
+            debugTextBox.AppendText(debugMessage + "\r\n");
         }
 
         //private void DisplayDebugInfo(string debugMessage)
