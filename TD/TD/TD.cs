@@ -178,7 +178,7 @@ namespace TD
             this.CheckBox.CustomPaintForeground += tabControl_CustomPaint;
             this.CheckBox.SelectedIndexChanged += tabControl_SelectedIndexChanged;
         }
-
+        //asdasd
         private void TD_Load(object sender, EventArgs e)
         {
             AddStartupProgram("TD", Application.ExecutablePath);
