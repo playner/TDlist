@@ -183,8 +183,8 @@ namespace TD
         {
             AddStartupProgram("TD", Application.ExecutablePath);
 
-            string dataINIFilePath = strCheckFolder + "\\INI\\CheckBoxData.ini";
-            string stateINIFilePath = strCheckFolder + "\\INI\\CheckBoxState.ini";
+            //string dataINIFilePath = strCheckFolder + "\\INI\\CheckBoxData.ini";
+            //string stateINIFilePath = strCheckFolder + "\\INI\\CheckBoxState.ini";
 
             IniData iniData = iniParser.ReadFile(strCheckFolder, EUCKREncoding());
             KeyDataCollection keyDatas = iniData["CheckBox"];
