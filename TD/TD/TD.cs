@@ -1,27 +1,16 @@
-﻿using MetroFramework.Controls;
+﻿using IniParser;
+using IniParser.Model;
+using MetroFramework;
+using MetroFramework.Controls;
 using MetroFramework.Drawing;
-using MetroFramework.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Collections.Specialized.BitVector32;
-using System.Reflection;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using IniParser;
-using IniParser.Model;
-using System.Windows.Forms.VisualStyles;
-using System.Diagnostics;
-using MetroFramework;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting;
 
 namespace TD
 {
@@ -151,7 +140,7 @@ namespace TD
         string strCheckFolder2 = Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('\\'));
 
         List<Tuple<MetroButton, MetroCheckBox>> buttonCheckBoxPairs = new List<Tuple<MetroButton, MetroCheckBox>>();
-        List<Panel> tabPanels = new List<Panel>();
+        List<MetroPanel> tabPanels = new List<MetroPanel>();
 
         private FileIniDataParser iniParser = new FileIniDataParser();
         private MouseEventArgs mouseEventArgsForRemove;
@@ -185,6 +174,9 @@ namespace TD
 
             //string dataINIFilePath = strCheckFolder + "\\INI\\CheckBoxData.ini";
             //string stateINIFilePath = strCheckFolder + "\\INI\\CheckBoxState.ini";
+
+            strCheckFolder += "\\INI\\CheckBoxData.ini";
+            strCheckFolder2 += "\\INI\\CheckBoxState.ini";
 
             IniData iniData = iniParser.ReadFile(strCheckFolder, EUCKREncoding());
             KeyDataCollection keyDatas = iniData["CheckBox"];
@@ -232,15 +224,11 @@ namespace TD
             {
                 if (!string.IsNullOrEmpty(buttonText))
                 {
-                    MetroTabPage currentTab = (MetroTabPage)CheckBox.SelectedTab;
-                    string panelName = "판넬" + CheckBox.SelectedIndex;
-
-                    Panel currentPanel = new Panel();
-                    currentPanel.Name = panelName;
+                    MetroTabPage currentTab = (MetroTabPage)CheckBox.SelectedTab; 
+                    MetroPanel currentPanel = tabPanels[CheckBox.SelectedIndex];
 
                     Tuple<MetroButton, MetroCheckBox> lastPair = buttonCheckBoxPairs[buttonCheckBoxPairs.Count - 1];
-                    currentTab.Controls.Add(currentPanel);
-
+                    
                     MetroCheckBox newCheckBox = new MetroCheckBox();
                     newCheckBox.FontSize = MetroCheckBoxSize.Tall;
                     newCheckBox.FontWeight = MetroCheckBoxWeight.Bold;
@@ -248,12 +236,14 @@ namespace TD
                     newCheckBox.Name = "체크박스" + buttonCheckBoxPairs.Count;
                     newCheckBox.Theme = MetroThemeStyle.Dark;
                     newCheckBox.UseSelectable = true;
-                    newCheckBox.Location = new Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
+                    if (currentPanel.Controls.OfType<MetroCheckBox>().Count() == 0) newCheckBox.Location = new Point(15 + newCheckBox.Width, 10+newCheckBox.Height);
+                    else newCheckBox.Location = new Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
                     newCheckBox.Size = new Size(체크박스0.Size.Width, 체크박스0.Size.Height);
                     newCheckBox.AutoSize = true;
                     newCheckBox.CheckedChanged += new EventHandler(criteriaCheckBoxChange);
 
                     currentPanel.Controls.Add(newCheckBox);
+
                     //테스트
                     MetroButton newButton = new MetroButton();
                     newButton.Text = "...";
@@ -261,19 +251,20 @@ namespace TD
                     newButton.FontSize = MetroButtonSize.Tall;
                     newButton.Name = "버튼" + buttonCheckBoxPairs.Count;
                     newButton.Size = new Size(criteriaModifyBtn.Size.Width, criteriaModifyBtn.Size.Height);
-                    newButton.Location = new Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
+                    if (currentPanel.Controls.OfType<MetroButton>().Count() == 0) newButton.Location = new Point(228 + newButton.Size.Width, 10 + newButton.Size.Height);
+                    else newButton.Location = new Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
+                    
                     newButton.Click += new EventHandler(criteriaModifyBtn_Click);
 
                     currentPanel.Controls.Add(newButton);
                     buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(newButton, newCheckBox));
 
 
-                    setIni(currentTab.Name + "Data", newCheckBox.Name, buttonText, strCheckFolder);
-                    setIni(currentTab.Name + "State", newCheckBox.Name, "False", strCheckFolder2);
+                    setIni(currentTab.Name + "CBData", newCheckBox.Name, buttonText, strCheckFolder);
+                    setIni(currentTab.Name + "CBState", newCheckBox.Name, "False", strCheckFolder2);
                 }
             }
         }
-
         private void criteriaModifyBtn_Click(object sender, EventArgs e)
         {
             MetroButton clickedButton = sender as MetroButton;
@@ -868,6 +859,7 @@ namespace TD
             // 선택된 탭에 해당하는 판넬을 보여주도록 설정
             ShowSelectedPanel(selectedTabIndex);
         }
+ 
         private void AddTabWithPanel()
         {
             CustomMessageBox messageBox = new CustomMessageBox("addBoxBtn");
@@ -881,15 +873,19 @@ namespace TD
                 {
                     MetroTabPage newTab = new MetroTabPage();
                     newTab.Text = buttonText;
+                    newTab.Name = buttonText;
                     CheckBox.TabPages.Insert(lastTapIndex, newTab);
                     CheckBox.SelectedIndex = lastTapIndex;
 
-                    Panel newPanel = new Panel();
+                    MetroPanel newPanel = new MetroPanel();
                     newPanel.Dock = DockStyle.Fill;
                     newPanel.Name = "판넬" + CheckBox.SelectedIndex;
+                    newPanel.Theme = MetroThemeStyle.Dark;
+                    newPanel.Location = new Point(23, 88);
+                    newPanel.Size = new Size(판넬0.Width, 판넬0.Height);
                     tabPanels.Add(newPanel);
 
-                    newTab.Controls.Add(newPanel);
+                    this.Controls.Add(newPanel);
 
                     CheckBox.SelectedTab = CheckBox.TabPages[CheckBox.TabPages.Count - 1];
                 }
