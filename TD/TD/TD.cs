@@ -141,7 +141,8 @@ namespace TD
 
         List<Tuple<MetroButton, MetroCheckBox>> buttonCheckBoxPairs = new List<Tuple<MetroButton, MetroCheckBox>>();
         List<MetroPanel> tabPanels = new List<MetroPanel>();
-
+        List<string> sectionNames = new List<string>();
+        
         private FileIniDataParser iniParser = new FileIniDataParser();
         private MouseEventArgs mouseEventArgsForRemove;
 
@@ -265,6 +266,7 @@ namespace TD
                 }
             }
         }
+       
         private void criteriaModifyBtn_Click(object sender, EventArgs e)
         {
             MetroButton clickedButton = sender as MetroButton;
@@ -491,60 +493,81 @@ namespace TD
 
         private void embodyINIData(string[] modifyIniLines)
         {
-            string section = "CheckBox";
+            //string section = "CheckBox";
             IniData iniData = iniParser.ReadFile(strCheckFolder, EUCKREncoding());
             KeyDataCollection sectionData = new KeyDataCollection();
+            int lastTapIndex = CheckBox.TabCount - 1;
+            int sectionCount = 0;
+            int sectionNum = 0;
 
-            bool inTargetSection = false, iAmFirst = false;
+            bool inTargetSection = false;
+
+            foreach (SectionData section in iniData.Sections)
+            {
+                sectionNames.Add(section.SectionName);
+            }
+            DisplayDebugInfo("Adsfadsf");
 
             #region 섹션데이터에 키값 미리 추가
+
             for (int i = 0; i < modifyIniLines.Length; i++)
             {
-                if (modifyIniLines[i].StartsWith($"[{section}]"))
+                if (modifyIniLines[i].StartsWith($"[{sectionNames[sectionNum]}]"))
                 {
+                    if (i != 0) i++;
+                    DisplayDebugInfo(i.ToString());
                     inTargetSection = true;
-                    iAmFirst = true;
                 }
 
                 else if (inTargetSection)
                 {
                     string[] keyValue = modifyIniLines[i].Split(new char[] { '=' }, 2);
-
 
                     if (keyValue.Length == 2)
                     {
                         string value = keyValue[1].Trim();
-
-                        if (iAmFirst)
-                        {
-                            sectionData.AddKey("CriteriaCheckBox", value);
-                            iAmFirst = false;
-                        }
-                        else
-                        {
-                            sectionData.AddKey("체크박스" + (i - 1), value);
-                        }
+                        sectionData.AddKey("체크박스" + (i - 1), value);
                     }
                 }
 
                 else
+                {
                     inTargetSection = false;
+                    sectionNum++;
+                }
             }
 
             #endregion
 
-            for (int i = 0; i < modifyIniLines.Length; i++)
+/*            for (int i = 0; i < modifyIniLines.Length; i++)
             {
-                if (modifyIniLines[i].StartsWith($"[{section}]"))
+                if (modifyIniLines[i].StartsWith($"[{sectionNames[sectionCount]}]"))
                 {
                     inTargetSection = true; // 목표 섹션 내부에 있다는 플래그를 설정
                     iAmFirst = true;
+
+                    MetroTabPage newTab = new MetroTabPage();
+                    newTab.Text = buttonText;
+                    newTab.Name = buttonText;
+                    CheckBox.TabPages.Insert(lastTapIndex, newTab);
+                    CheckBox.SelectedIndex = lastTapIndex;
+
+                    MetroPanel newPanel = new MetroPanel();
+                    newPanel.Dock = DockStyle.Fill;
+                    newPanel.Name = "판넬" + CheckBox.SelectedIndex;
+                    newPanel.Theme = MetroThemeStyle.Dark;
+                    newPanel.Location = new Point(23, 88);
+                    newPanel.Size = new Size(판넬0.Width, 판넬0.Height);
+                    tabPanels.Add(newPanel);
+                    Controls.Add(newPanel);
+
+                    CheckBox.SelectedTab = CheckBox.TabPages[CheckBox.TabPages.Count - 1];
                 }
 
                 else if (inTargetSection)
                 {
-                    // 현재 섹션 내부에 있는 키-값 쌍을 처리
                     string[] keyValue = modifyIniLines[i].Split(new char[] { '=' }, 2);
+                    
                     if (keyValue.Length == 2)
                     {
                         string key = keyValue[0].Trim();
@@ -552,12 +575,12 @@ namespace TD
 
                         if (iAmFirst)
                         {
-                            this.체크박스0.Text = value;
-                            this.체크박스0.Name = "CriteriaCheckBox";
+                            체크박스0.Text = value;
+                            체크박스0.Name = "CriteriaCheckBox";
 
                             if (key != "CriteriaCheckBox")
                             {
-                                iniData.Sections.RemoveSection(section);
+                                iniData.Sections.RemoveSection(sectionNames[sectionCount]);
 
                                 iniParser.WriteFile(strCheckFolder, iniData, Encoding.Default);
 
@@ -567,14 +590,14 @@ namespace TD
                                     {
                                         KeyData keyData = sectionData.GetKeyData("CriteriaCheckBox");
                                         string stringkey = keyData.Value.Trim();
-                                        setIni(section, "CriteriaCheckBox", stringkey, strCheckFolder);
+                                        setIni(sectionNames[sectionCount], "CriteriaCheckBox", stringkey, strCheckFolder);
                                     }
 
                                     else
                                     {
                                         KeyData keyData = sectionData.GetKeyData("체크박스" + k);
                                         string stringkey = keyData.Value.Trim();
-                                        setIni(section, "체크박스" + k, stringkey, strCheckFolder);
+                                        setIni(sectionNames[sectionCount], "체크박스" + k, stringkey, strCheckFolder);
                                     }
                                 }
                             }
@@ -615,10 +638,11 @@ namespace TD
 
                     else
                     {
+                        sectionCount++;
                         inTargetSection = false; // 다음 섹션으로 이동
                     }
                 }
-            }
+            }*/
 
         }
 
@@ -865,7 +889,7 @@ namespace TD
             CustomMessageBox messageBox = new CustomMessageBox("addBoxBtn");
             DialogResult result = messageBox.ShowDialog();
             buttonText = messageBox.GetInputText();
-            int lastTapIndex = this.CheckBox.TabCount - 1;
+            int lastTapIndex = CheckBox.TabCount - 1;
 
             if (result == DialogResult.OK)
             {
@@ -885,7 +909,7 @@ namespace TD
                     newPanel.Size = new Size(판넬0.Width, 판넬0.Height);
                     tabPanels.Add(newPanel);
 
-                    this.Controls.Add(newPanel);
+                    Controls.Add(newPanel);
 
                     CheckBox.SelectedTab = CheckBox.TabPages[CheckBox.TabPages.Count - 1];
                 }
