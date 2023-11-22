@@ -117,41 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="체크박스0.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="체크박스0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 10</value>
-  </data>
-  <data name="체크박스0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 25</value>
-  </data>
-  <data name="체크박스0.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="체크박스0.Text" xml:space="preserve">
-    <value>asd</value>
-  </data>
-  <data name="&gt;&gt;체크박스0.Name" xml:space="preserve">
-    <value>체크박스0</value>
-  </data>
-  <data name="&gt;&gt;체크박스0.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroCheckBox, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;체크박스0.Parent" xml:space="preserve">
-    <value>판넬0</value>
-  </data>
-  <data name="&gt;&gt;체크박스0.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="metroProgressBar1.Location" type="System.Drawing.Point, System.Drawing">
     <value>23, 621</value>
   </data>
   <data name="metroProgressBar1.Size" type="System.Drawing.Size, System.Drawing">
     <value>216, 36</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="metroProgressBar1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
@@ -165,7 +138,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;metroProgressBar1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="addBoxBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>255, 621</value>
@@ -189,82 +162,37 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;addBoxBtn.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
-  <data name="판넬0.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="debugTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 454</value>
+  </data>
+  <data name="debugTextBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="criteriaModifyBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>223, 10</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="debugTextBox.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
   </data>
-  <data name="criteriaModifyBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 25</value>
+  <data name="debugTextBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
   </data>
-  <data name="criteriaModifyBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="debugTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>287, 135</value>
   </data>
-  <data name="criteriaModifyBtn.Text" xml:space="preserve">
-    <value>...</value>
+  <data name="debugTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="&gt;&gt;criteriaModifyBtn.Name" xml:space="preserve">
-    <value>criteriaModifyBtn</value>
+  <data name="&gt;&gt;debugTextBox.Name" xml:space="preserve">
+    <value>debugTextBox</value>
   </data>
-  <data name="&gt;&gt;criteriaModifyBtn.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroButton, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
+  <data name="&gt;&gt;debugTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;criteriaModifyBtn.Parent" xml:space="preserve">
-    <value>판넬0</value>
-  </data>
-  <data name="&gt;&gt;criteriaModifyBtn.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="판넬0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 88</value>
-  </data>
-  <data name="판넬0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 501</value>
-  </data>
-  <data name="판넬0.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;판넬0.Name" xml:space="preserve">
-    <value>판넬0</value>
-  </data>
-  <data name="&gt;&gt;판넬0.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroPanel, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;판넬0.Parent" xml:space="preserve">
+  <data name="&gt;&gt;debugTextBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;판넬0.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="metroTabPage1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 38</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="metroTabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="metroTabPage1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, 0</value>
-  </data>
-  <data name="metroTabPage1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="metroTabPage1.Text" xml:space="preserve">
-    <value>metroTabPage1</value>
-  </data>
-  <data name="&gt;&gt;metroTabPage1.Name" xml:space="preserve">
-    <value>metroTabPage1</value>
-  </data>
-  <data name="&gt;&gt;metroTabPage1.Type" xml:space="preserve">
-    <value>MetroFramework.Controls.MetroTabPage, MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a</value>
-  </data>
-  <data name="&gt;&gt;metroTabPage1.Parent" xml:space="preserve">
-    <value>CheckBox</value>
-  </data>
-  <data name="&gt;&gt;metroTabPage1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;debugTextBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="metroTabPage2.AutoScroll" type="System.Boolean, mscorlib">
@@ -277,7 +205,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="metroTabPage2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>286, -10</value>
+    <value>286, 0</value>
   </data>
   <data name="metroTabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -292,7 +220,7 @@
     <value>CheckBox</value>
   </data>
   <data name="&gt;&gt;metroTabPage2.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="CheckBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -317,36 +245,6 @@
   </data>
   <data name="&gt;&gt;CheckBox.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="debugTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 454</value>
-  </data>
-  <data name="debugTextBox.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="debugTextBox.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
-    <value>No</value>
-  </data>
-  <data name="debugTextBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Vertical</value>
-  </data>
-  <data name="debugTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 135</value>
-  </data>
-  <data name="debugTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;debugTextBox.Name" xml:space="preserve">
-    <value>debugTextBox</value>
-  </data>
-  <data name="&gt;&gt;debugTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;debugTextBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;debugTextBox.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
