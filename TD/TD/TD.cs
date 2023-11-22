@@ -550,8 +550,10 @@ namespace TD
 
             #endregion
 
-            for (int i = 0; i < modifyIniLines.Length; i++)
+
+            foreach (SectionData sectionData2 in iniData.Sections)
             {
+<<<<<<< HEAD
                 if (modifyIniLines[i].StartsWith($"[{sectionNames[sectionNum]}]"))
                 {
                     inTargetSection = true; // 목표 섹션 내부에 있다는 플래그를 설정                   
@@ -583,10 +585,17 @@ namespace TD
                     string[] keyValue = modifyIniLines[i].Split(new char[] { '=' }, 2);
 
                     if (keyValue.Length == 2)
+=======
+                for (int i = 0; i < modifyIniLines.Length; i++)
+                {
+                    if (modifyIniLines[i].StartsWith($"[{sectionData2.SectionName}]"))
+>>>>>>> 1db8f656119d7badb785d2011c3f414415ed32fe
                     {
-                        string key = keyValue[0].Trim();
-                        string value = keyValue[1].Trim();
+                        inTargetSection = true; // 목표 섹션 내부에 있다는 플래그를 설정
+                        iAmFirst = true;
+                    }
 
+<<<<<<< HEAD
                         /*for (int k = 0; k < count; k++)
                         {
                             KeyData keyData = sectionData.GetKeyData(sectionNum + "체크박스" + (k + 1));
@@ -605,12 +614,119 @@ namespace TD
                         newCheckBox.Name = "체크박스" + checkboxNum;
                         newCheckBox.Theme = MetroThemeStyle.Dark;
                         newCheckBox.UseSelectable = true;
+=======
+                    else if (inTargetSection)
+                    {
+                        // 현재 섹션 내부에 있는 키-값 쌍을 처리
+                        string[] keyValue = modifyIniLines[i].Split(new char[] { '=' }, 2);
+                        if (keyValue.Length == 2)
+                        {
+                            string key = keyValue[0].Trim();
+                            string value = keyValue[1].Trim();
+
+                            if (iAmFirst)
+                            {
+                                this.체크박스0.Text = value;
+                                this.체크박스0.Name = "CriteriaCheckBox";
+
+                                if (key != "CriteriaCheckBox")
+                                {
+                                    iniData.Sections.RemoveSection(section);
+
+                                    iniParser.WriteFile(strCheckFolder, iniData, Encoding.Default);
+
+                                    for (int k = 0; k < sectionData.Count; k++)
+                                    {
+                                        if (k == 0)
+                                        {
+                                            KeyData keyData = sectionData.GetKeyData("CriteriaCheckBox");
+                                            string stringkey = keyData.Value.Trim();
+                                            setIni(section, "CriteriaCheckBox", stringkey, strCheckFolder);
+                                        }
+
+                                        else
+                                        {
+                                            KeyData keyData = sectionData.GetKeyData("체크박스" + k);
+                                            string stringkey = keyData.Value.Trim();
+                                            setIni(section, "체크박스" + k, stringkey, strCheckFolder);
+                                        }
+                                    }
+                                }
+                                iAmFirst = false;
+                            }
+
+                            else
+                            {
+                                //Tuple<MetroButton, MetroCheckBox> lastPair = buttonCheckBoxPairs[buttonCheckBoxPairs.Count - 1];
+                                //
+                                //MetroCheckBox newCheckBox = new MetroCheckBox();
+                                //newCheckBox.FontSize = MetroFramework.MetroCheckBoxSize.Tall;
+                                //newCheckBox.FontWeight = MetroFramework.MetroCheckBoxWeight.Bold;
+                                //newCheckBox.Name = key;
+                                //newCheckBox.Text = value;
+                                //newCheckBox.Theme = MetroFramework.MetroThemeStyle.Dark;
+                                //newCheckBox.UseSelectable = true;
+                                //newCheckBox.Location = new System.Drawing.Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
+                                //newCheckBox.Size = new Size(체크박스0.Size.Width, 체크박스0.Size.Height);
+                                //newCheckBox.CheckedChanged += new System.EventHandler(this.criteriaCheckBoxChange);
+                                //newCheckBox.AutoSize = true;
+                                //
+                                //판넬0.Controls.Add(newCheckBox);
+                                //
+                                //MetroButton newButton = new MetroButton();
+                                //newButton.Text = "...";
+                                //newButton.Theme = MetroFramework.MetroThemeStyle.Dark;
+                                //newButton.FontSize = MetroFramework.MetroButtonSize.Tall;
+                                //newButton.Size = new Size(criteriaModifyBtn.Size.Width, criteriaModifyBtn.Size.Height);
+                                //newButton.Location = new System.Drawing.Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
+                                //newButton.Click += new System.EventHandler(this.criteriaModifyBtn_Click);
+                                //
+                                //판넬0.Controls.Add(newButton);
+                                //
+                                //buttonCheckBoxPairs.Add(new Tuple<MetroButton, MetroCheckBox>(newButton, newCheckBox));
+
+                                MetroTabPage currentTab = (MetroTabPage)CheckBox.SelectedTab;
+                                MetroPanel currentPanel = tabPanels[CheckBox.SelectedIndex];
+
+                                Tuple<MetroButton, MetroCheckBox> lastPair = buttonCheckBoxPairs[buttonCheckBoxPairs.Count - 1];
+
+                                MetroCheckBox newCheckBox = new MetroCheckBox();
+                                newCheckBox.FontSize = MetroCheckBoxSize.Tall;
+                                newCheckBox.FontWeight = MetroCheckBoxWeight.Bold;
+                                newCheckBox.Text = buttonText;
+                                newCheckBox.Name = "체크박스" + buttonCheckBoxPairs.Count;
+                                newCheckBox.Theme = MetroThemeStyle.Dark;
+                                newCheckBox.UseSelectable = true;
+                                if (currentPanel.Controls.OfType<MetroCheckBox>().Count() == 0) newCheckBox.Location = new Point(15 + newCheckBox.Width, 10 + newCheckBox.Height);
+                                else newCheckBox.Location = new Point(lastPair.Item2.Left, lastPair.Item2.Top + lastPair.Item2.Height + 5);
+                                newCheckBox.Size = new Size(체크박스0.Size.Width, 체크박스0.Size.Height);
+                                newCheckBox.AutoSize = true;
+                                newCheckBox.CheckedChanged += new EventHandler(criteriaCheckBoxChange);
+
+                                currentPanel.Controls.Add(newCheckBox);
+
+                                MetroButton newButton = new MetroButton();
+                                newButton.Text = "...";
+                                newButton.Theme = MetroThemeStyle.Dark;
+                                newButton.FontSize = MetroButtonSize.Tall;
+                                newButton.Name = "버튼" + buttonCheckBoxPairs.Count;
+                                newButton.Size = new Size(criteriaModifyBtn.Size.Width, criteriaModifyBtn.Size.Height);
+                                if (currentPanel.Controls.OfType<MetroButton>().Count() == 0) newButton.Location = new Point(228 + newButton.Size.Width, 10 + newButton.Size.Height);
+                                else newButton.Location = new Point(lastPair.Item1.Left, lastPair.Item1.Top + lastPair.Item1.Height + 5);
+                                newButton.Click += new EventHandler(criteriaModifyBtn_Click);
+                            }
+                        }
+>>>>>>> 1db8f656119d7badb785d2011c3f414415ed32fe
 
                         if (currentPanel.Controls.OfType<MetroCheckBox>().Count() == 0) newCheckBox.Location = new Point(15, 10 + newCheckBox.Height);
                         else
                         {
+<<<<<<< HEAD
                             MetroCheckBox lastCheckBox = currentPanel.Controls.OfType<MetroCheckBox>().Last();
                             newCheckBox.Location = new Point(lastCheckBox.Left, lastCheckBox.Top + lastCheckBox.Height + 5);
+=======
+                            inTargetSection = false; // 다음 섹션으로 이동
+>>>>>>> 1db8f656119d7badb785d2011c3f414415ed32fe
                         }
 
                         newCheckBox.Size = new Size(57, 25);
@@ -637,6 +753,7 @@ namespace TD
 
                         checkboxNum++;
                     }
+<<<<<<< HEAD
 
                     if (i == modifyIniLines.Length - 1 || modifyIniLines[i + 1].StartsWith("["))
                     {
@@ -645,6 +762,10 @@ namespace TD
                     }
                 }
             }
+=======
+                }
+            }         
+>>>>>>> 1db8f656119d7badb785d2011c3f414415ed32fe
         }
 
         private void RefreshUI(string section, DialogResult result, int index, string[] modifyIniLines, string message)
